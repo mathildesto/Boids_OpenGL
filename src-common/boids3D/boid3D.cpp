@@ -1,5 +1,10 @@
 #include "p6/p6.h"
 #include "boid3D.hpp"
+#include "glm/gtc/type_ptr.hpp"
+#include <iostream>
+#include "Camera/Trackball.h"
+#include<cmath>
+#include "glimac/sphere_vertices.hpp"
 
 float compute_distance(const Boid3D boid1, const Boid3D boid2 ){
         //distance = sqrt((x2 - x1)² + (y2 - y1)²)
@@ -76,23 +81,23 @@ void cohesion(std::vector<Boid3D>& boids, ParamBoids3D &param, Boid3D &boid){
 }
 
 void keep_inside_boundaries(ParamBoids3D &param, Window3D &window, Boid3D &boid){
-    if (boid.position[0] < window.WINDOW_MIN_X) {
+    if (boid.position[0] < 0.8*window.WINDOW_MIN_X) {
         boid.velocity[0] += param.turnfactor ; // reverse the x-component of the velocity
     }
-    else if (boid.position[0] > window.WINDOW_MAX_X) {
+    else if (boid.position[0] > 0.8*window.WINDOW_MAX_X) {
         boid.velocity[0] += -param.turnfactor;
     }
-    if (boid.position[1] < window.WINDOW_MIN_Y) {
+    if (boid.position[1] < 0.8*window.WINDOW_MIN_Y) {
         boid.velocity[1] += param.turnfactor;
     }
-    else if (boid.position[1] > window.WINDOW_MAX_Y) {
+    else if (boid.position[1] > 0.8*window.WINDOW_MAX_Y) {
         boid.velocity[1] += -param.turnfactor;
     }
 
-    if (boid.position[2] < window.WINDOW_MIN_Z) {
+    if (boid.position[2] < 0.8*window.WINDOW_MIN_Z) {
         boid.velocity[2] += param.turnfactor;
     }
-    else if (boid.position[2] > window.WINDOW_MAX_Z) {
+    else if (boid.position[2] > 0.8*window.WINDOW_MAX_Z) {
         boid.velocity[2] += -param.turnfactor;
     }
 }
@@ -189,10 +194,4 @@ void update_position(std::vector<Boid3D>& boids, Window3D &window, ParamBoids3D 
     }
 }
 
-// void draw_boids(const std::vector<Boid3D>& boids, p6::Context& ctx, const ParamBoids& param) {
 
-//     for (const auto& boid : boids)
-//     {
-//         ctx.circle({float(boid.position[0]), float(boid.position[1])}, p6::Radius{param.boidSize});
-//     }
-// }
