@@ -2,7 +2,7 @@
 #include "boid3D.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <iostream>
-#include "Camera/Trackball.h"
+#include "Cam/Trackball.h"
 #include<cmath>
 #include "glimac/sphere_vertices.hpp"
 

@@ -2,7 +2,6 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "p6/p6.h"
 #include <iostream>
-#include "Camera/Trackball.h"
 #include<cmath>
 #include "glimac/sphere_vertices.hpp"
 

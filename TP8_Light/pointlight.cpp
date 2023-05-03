@@ -1,6 +1,6 @@
 #include <cstddef> // For offsetof()
 #include <glm/gtc/random.hpp>
-#include "Camera/Trackball.h"
+#include "Cam/Trackball.h"
 #include "glimac/common.hpp"
 #include "glimac/sphere_vertices.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
