@@ -1,8 +1,10 @@
 #pragma once
+#include "Cam/Freefly.h"
 #include "boids3D/boid3D.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "p6/p6.h"
 #include <iostream>
+#include "Cam/Freefly.h"
 #include "Cam/Trackball.h"
 #include<cmath>
 #include "glimac/sphere_vertices.hpp"
@@ -89,7 +91,7 @@ void BoidsProgram::drawBoids(GLuint vao, std::vector<Boid3D>& boids, Camera::Tra
             modelViewMatrix = glm::translate(trackball.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
             modelViewMatrix = glm::translate(modelViewMatrix, boids[i].position);
             modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{param.boidSize});
-            normalMatrix    = glm::transpose(glm::inverse(modelViewMatrix));
+            // normalMatrix    = glm::transpose(glm::inverse(modelViewMatrix));
 
            glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(modelViewMatrix));
            glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projectionMatrix * modelViewMatrix));

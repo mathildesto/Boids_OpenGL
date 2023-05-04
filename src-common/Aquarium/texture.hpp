@@ -1,5 +1,4 @@
 #pragma once
-#include "boids3D/boid3D.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "p6/p6.h"
 #include <iostream>

@@ -8,30 +8,40 @@
 struct ParamBoids3D{
     int numberOfBoids = 50;
 
-    float boidSize = 0.1f;
+    float boidSize = 0.02f;
 
-    float visualRange = 0.8 ; 
-    float protectedRange = 0.5 ; 
+    float visualRange = 0.3 ; 
+    float protectedRange = 0.08 ; 
 
     float turnfactor = 0.015 ; 
     float centeringfactor = 0.0005;
-    float avoidfactor =  0.04;
-    float matchingfactor = 0.05;
+    float avoidfactor =  0.03;
+    float matchingfactor = 0.03;
     
-    float maxspeed = 0.04;
-    float minspeed = 0.009;
+    float maxspeed = 0.01;
+    float minspeed = 0.005;
 };
 
 struct Window3D {
 
-    float WINDOW_MIN_X = -3.;
-    float WINDOW_MAX_X = 3;
+    // float WINDOW_MIN_X = -3.;
+    // float WINDOW_MAX_X = 3;
 
-    float WINDOW_MIN_Y = -2.;
-    float WINDOW_MAX_Y = 2.;
+    // float WINDOW_MIN_Y = -2.;
+    // float WINDOW_MAX_Y = 2.;
 
-    float WINDOW_MIN_Z = -2.;
-    float WINDOW_MAX_Z = 2.;
+    // float WINDOW_MIN_Z = -2.;
+    // float WINDOW_MAX_Z = 2.;
+
+    
+    float WINDOW_MIN_X = -0.5;
+    float WINDOW_MAX_X = 0.5;
+
+    float WINDOW_MIN_Y = -0.5;
+    float WINDOW_MAX_Y = 0.5;
+
+    float WINDOW_MIN_Z = -0.5;
+    float WINDOW_MAX_Z = 0.5;
 };
 
 struct Boid3D {
@@ -40,7 +50,7 @@ struct Boid3D {
     glm::vec3 velocity;
 
     Boid3D() {
-        position = glm::vec3(p6::random::number(-1, 1), p6::random::number(-1, 1), p6::random::number(-1, 1));
+        position = glm::vec3(p6::random::number(-0.5, 0.5), p6::random::number(-0.5, 0.5), p6::random::number(-0.5, 0.5));
         velocity = glm::vec3(0, 0, 0);
     }
 

@@ -1,8 +1,10 @@
 #pragma once
+#include "Cam/Trackball.h"
 #include "boids3D/boid3D.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "p6/p6.h"
 #include <iostream>
+#include "Cam/Freefly.h"
 #include "Cam/Trackball.h"
 #include<cmath>
 #include "glimac/sphere_vertices.hpp"
