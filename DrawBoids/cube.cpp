@@ -3,12 +3,10 @@
 // #include <glm/gtc/random.hpp>
 // #include "Cam/Freefly.h"
 // #include "glimac/common.hpp"
-// #include "glimac/sphere_vertices.hpp"
 // #include "glm/ext/matrix_clip_space.hpp"
 // #include "glm/ext/matrix_transform.hpp"
 // #include "glm/gtc/type_ptr.hpp"
 // #include "p6/p6.h"
-// #include "boids3D/boid3D.hpp"
 // #include "Aquarium/texture.hpp"
 
 // int main()
