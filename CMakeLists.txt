@@ -14,6 +14,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(p6)
 
+
 # ---Create a target for each exercise---
 function(add_exercise EXERCISE_NAME)
     set(TARGET_NAME ${EXERCISE_NAME}_exe)

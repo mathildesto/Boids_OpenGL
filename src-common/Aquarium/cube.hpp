@@ -7,7 +7,7 @@
 #include "Cam/Trackball.h"
 #include<cmath>
 #include "glimac/sphere_vertices.hpp"
-#include "Aquarium/texture.hpp"
+#include "OpenGL_program/Texture_program.hpp"
 
 
 struct CubeProgram {

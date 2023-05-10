@@ -1,3 +1,5 @@
+#include "tinyobjloader/tiny_obj_loader.h"
+
 #include <vcruntime.h>
 #include <cstddef> // For offsetof()
 #include <glm/gtc/random.hpp>
@@ -14,6 +16,8 @@
 #include "Aquarium/cubeEBO.hpp"
 #include "Aquarium/cube.hpp"
 #include "Aquarium/skybox.hpp"
+
+
 
 static void render_gui(ParamBoids3D& param, Window3D& window){
 
@@ -80,7 +84,6 @@ int main()
 
     Window3D window;
 
-    // CubeEBOProgram cubeProgram{window};
     BoidsProgram boidsProgram{};
     CubeProgram aquarium;
     SkyboxProgram skybox;
@@ -90,7 +93,6 @@ int main()
 
    glEnable(GL_DEPTH_TEST); // 3D
 
-    // cubeProgram.setVAO();
     boidsProgram.setVAO();
     aquarium.setVAO();
     skybox.setVAO();
