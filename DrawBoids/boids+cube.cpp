@@ -13,7 +13,6 @@
 #include "p6/p6.h"
 #include "boids3D/boid3D.hpp"
 #include "boids3D/3DBoidsProgram.hpp"
-#include "Aquarium/cubeEBO.hpp"
 #include "Aquarium/cube.hpp"
 #include "Aquarium/skybox.hpp"
 
