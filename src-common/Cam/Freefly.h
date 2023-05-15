@@ -6,6 +6,16 @@ namespace Camera {
 
 class Freefly {
 public:
+
+    // Spherical coordinate
+    glm::vec3 _position{};
+    glm::vec3 _front;// front vector pointant en face de la caméra.
+    glm::vec3 _left;
+    glm::vec3 _up;
+    
+    float     _phi{p6::PI};
+    float     _theta{};
+
     Freefly(glm::vec3 position = {}, float phi = 0.f, float theta = 0.f);
     glm::mat4 getViewMatrix() const;
 
@@ -19,15 +29,6 @@ public:
     void handleEvent(p6::Context &ctx);
     void computeDirectionVectors();
 
-    // Spherical coordinate
-    glm::vec3 _position{};
-    float     _phi{p6::PI};
-    float     _theta{};
-
-    glm::vec3 _front;
-    glm::vec3 _left;
-    glm::vec3 _up;
 };
 
-
-} // namespace Camera
+} 

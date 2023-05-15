@@ -100,11 +100,9 @@ int main()
         aquarium.drawCube(freefly, projection);
         skybox.drawSkybox(freefly, projection);
 
-        perso.draw(freefly, normalMatrix, projection);
+        perso.renderThirdPerson(freefly, normalMatrix, projection);
 
         freefly.handleEvent(ctx);
-
-
 
    };
 

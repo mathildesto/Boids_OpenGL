@@ -22,13 +22,13 @@ void Freefly::handleEvent(p6::Context &ctx){
         moveLeft(step);
 
 
-    if (ctx.key_is_pressed(GLFW_KEY_K))
+    if (ctx.key_is_pressed(GLFW_KEY_DOWN))
         rotateDown(step * 100);;
-    if (ctx.key_is_pressed(GLFW_KEY_I))
-    rotateUp(step * 100);
-    if (ctx.key_is_pressed(GLFW_KEY_L))
+    if (ctx.key_is_pressed(GLFW_KEY_UP))
+        rotateUp(step * 100);
+    if (ctx.key_is_pressed(GLFW_KEY_RIGHT))
         rotateLeft(step * 100);
-    if (ctx.key_is_pressed(GLFW_KEY_J))
+    if (ctx.key_is_pressed(GLFW_KEY_LEFT))
         rotateRight(step * 100);
     };
 
@@ -55,8 +55,6 @@ void Freefly::moveFront(float t)
 {
     _position += t * _front;
 }
-
-// ToDo: Up And Down
 
 void Freefly::rotateLeft(float degrees)
 {

@@ -25,10 +25,13 @@ struct Personnage {
 
     GLuint vbo, vao;
 
+    // Spherical coordinate
+    glm::vec3 _position{};
+
     const std::vector<glimac::ShapeVertex> vertices = glimac::sphere_vertices(1.f, 32, 16);
 
 
-    Personnage() : m_Program(p6::load_shader("shaders/3D_light.vs.glsl", "shaders/directionalLight.fs.glsl"))
+    Personnage(glm::vec3 position = {}) : _position(position), m_Program(p6::load_shader("shaders/3D_light.vs.glsl", "shaders/directionalLight.fs.glsl"))
     {
         uMVPMatrix              = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
         uMVMatrix               = glGetUniformLocation(m_Program.id(), "uMVMatrix");
@@ -45,5 +48,12 @@ struct Personnage {
 
     void setVAO();
 
-    void draw(Camera::Freefly freefly, glm::mat4 normalMatrix, glm::mat4 projectionMatrix);
+    // void draw(Camera::Freefly freefly, glm::mat4 normalMatrix, glm::mat4 projectionMatrix, p6::Context &ctx);
+    
+    void computeDirectionVectors();
+
+    void draw(glm::mat4 &viewMatrix, glm::mat4 &normalMatrix, glm::mat4 &projectionMatrix);
+
+    void renderThirdPerson(Camera::Freefly& camera, glm::mat4 &normalMatrix, glm::mat4 &projectionMatrix);
+
 };
