@@ -48,12 +48,9 @@ struct Personnage {
 
     void setVAO();
 
-    // void draw(Camera::Freefly freefly, glm::mat4 normalMatrix, glm::mat4 projectionMatrix, p6::Context &ctx);
-    
-    void computeDirectionVectors();
+    void updatePosition(Camera::Freefly& camera);
 
-    void draw(glm::mat4 &viewMatrix, glm::mat4 &normalMatrix, glm::mat4 &projectionMatrix);
+    void draw(Camera::Freefly& freefly, glm::mat4 &normalMatrix, glm::mat4 &projectionMatrix);
 
-    void renderThirdPerson(Camera::Freefly& camera, glm::mat4 &normalMatrix, glm::mat4 &projectionMatrix);
 
 };

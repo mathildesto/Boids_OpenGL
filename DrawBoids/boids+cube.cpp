@@ -83,27 +83,28 @@ int main()
     auto projection = glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), .1f, 100.f); 
 
     ctx.update = [&]() {
-        // auto view  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
         auto view  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
         auto normalMatrix     = glm::transpose(glm::inverse(view));
 
         glClearColor(0.f, 0.f, 0.f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        // perso.renderThirdPerson(freefly, normalMatrix, projection);
+
+        perso.draw(freefly, normalMatrix, projection);
+
+        freefly.handleEvent(ctx);
+        
         // boidsProgram.drawBoids(boidsProgram.vao, boids, freefly, normalMatrix, projection, param, window);
-        boidsProgram.drawBoids(boidsProgram.vao, boids, freefly, normalMatrix, projection, param, window);
 
         // cubeProgram.drawCube(cubeProgram.cubeVAO, freefly, normalMatrix, projection);
-        // aquarium.drawCube(freefly, projection);
-        // skybox.drawSkybox(freefly, projection);
-
         aquarium.drawCube(freefly, projection);
         skybox.drawSkybox(freefly, projection);
 
-        perso.renderThirdPerson(freefly, normalMatrix, projection);
+        // aquarium.drawCube(freefly, projection);
+        // skybox.drawSkybox(freefly, projection);
 
-        freefly.handleEvent(ctx);
-
+    
    };
 
    // Should be done last. It starts the infinite loop.
