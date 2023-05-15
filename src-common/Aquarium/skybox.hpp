@@ -96,13 +96,13 @@ struct SkyboxProgram {
     glBindVertexArray(0);
         }
 
-    void drawSkybox( Camera::Trackball trackball, glm::mat4 projection){
+    void drawSkybox( Camera::Freefly freefly, glm::mat4 projection){
 
         // Draw skybox as last
         glDepthFunc( GL_LEQUAL );  // Change depth function so depth test passes when values are equal to depth buffer's content
 
         skyboxShader.use( );
-        glm::mat4 view = glm::mat4( glm::mat3( trackball.getViewMatrix()));	// Remove any translation component of the view matrix
+        glm::mat4 view = glm::mat4( glm::mat3( freefly.getViewMatrix()));	// Remove any translation component of the view matrix
         // view = glm::mat4( glm::mat3( camera.GetViewMatrix( ) ) );	// Remove any translation component of the view matrix
 
         glUniformMatrix4fv( glGetUniformLocation( skyboxShader.id(), "view" ), 1, GL_FALSE, glm::value_ptr( view ) );

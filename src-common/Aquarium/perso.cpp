@@ -8,9 +8,9 @@
 #include "Cam/Trackball.h"
 #include<cmath>
 #include "glimac/sphere_vertices.hpp"
-#include "3DBoidsProgram.hpp"
+#include "perso.hpp"
 
-    void BoidsProgram::setVAO(){
+    void Personnage::setVAO(){
         const GLuint VERTEX_ATTR_POSITION   = 10;
         const GLuint VERTEX_ATTR_NORMAL     = 11;
         const GLuint VERTEX_ATTR_TEX_COORDS = 12;
@@ -70,40 +70,28 @@
         /** FIN VAO **/
     }
 
-void BoidsProgram::drawBoids(GLuint vao, std::vector<Boid3D>& boids, Camera::Freefly freefly, glm::mat4 normalMatrix, glm::mat4 projectionMatrix, ParamBoids3D& param, Window3D& window){
+void Personnage::draw(Camera::Freefly freefly, glm::mat4 normalMatrix, glm::mat4 projectionMatrix){
         m_Program.use();
         auto modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
+        
+        modelViewMatrix = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
+        modelViewMatrix = glm::translate(modelViewMatrix,  freefly._position);
+        modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{0.04f});
 
-        glBindVertexArray(vao);
+       glBindVertexArray(vao);
 
-        glUniform3fv(uKdVector, 1, glm::value_ptr(glm::vec3{0.5, 0.5, 0.5}));
-        glUniform3fv(uKsVector, 1, glm::value_ptr(glm::vec3{0.5, 0.5, 0.5}));
-        glUniform1f(uShininessFloat, 1.f);
-        glUniform3fv(uLightDirVector, 1, glm::value_ptr(glm::vec3(glm::mat4{1} * glm::vec4{1.f,1.f,1.f, 1.f}))); 
-        //glUniform3fv(uLightDirVector, 1, glm::value_ptr(glm::vec3(freefly.getViewMatrix() * glm::vec4{1.f,1.f,1.f, 1.f}))); // mat4 -> vec3 ???
+       glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(modelViewMatrix));
+       glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projectionMatrix * modelViewMatrix));
+       glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
-        glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{1.f, 1.f, 1.f}));
+       glUniform3fv(uKdVector, 1, glm::value_ptr(glm::vec3{0.5, 0.0, 0.0}));
+       glUniform3fv(uKsVector, 1, glm::value_ptr(glm::vec3{0.5, 0.0, 0.0}));
+       glUniform1f(uShininessFloat, 1.f);
+       glUniform3fv(uLightDirVector, 1, glm::value_ptr(glm::vec3(freefly.getViewMatrix() * glm::vec4{2.f,2.f,2.f, 1.f}))); // mat4 -> vec3 ???
+       glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{1.f, .3f, .5f}));
 
 
-        for (size_t i = 0; i < boids.size(); i++)
-        {
-            // modelViewMatrix = glm::translate(glm::mat4{1}, glm::vec3(0.f, 0.f, -5.f));
-            modelViewMatrix = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
-            modelViewMatrix = glm::translate(modelViewMatrix, boids[i].position);
-            modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{param.boidSize});
-            // normalMatrix    = glm::transpose(glm::inverse(modelViewMatrix));
 
-           glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(modelViewMatrix));
-           glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projectionMatrix * modelViewMatrix));
-           glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
-           glDrawArrays(GL_TRIANGLES, 0, vertices.size());
-       }
-
-        update_position(boids, window, param);
-
-        //Variation du nombre de boids
-        resize(param, boids);
-
-       glBindVertexArray(0);
+       glDrawArrays(GL_TRIANGLES, 0, vertices.size()); // 3 car 3 sommets
     }

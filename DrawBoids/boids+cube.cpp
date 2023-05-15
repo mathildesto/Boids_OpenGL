@@ -14,6 +14,7 @@
 #include "boids3D/boid3D.hpp"
 #include "boids3D/3DBoidsProgram.hpp"
 #include "Aquarium/cube.hpp"
+#include "Aquarium/perso.hpp"
 #include "Aquarium/skybox.hpp"
 
 
@@ -43,49 +44,15 @@ int main()
     auto ctx     = p6::Context{{1280, 720, "TP6"}};
     ctx.maximize_window();
 
-    auto trackball = Camera::Trackball{};
-    ctx.mouse_scrolled = [&](p6::MouseScroll scroll) {
-        trackball.moveFront(scroll.dy);
-    };
-    ctx.mouse_dragged = [&](p6::MouseDrag drag) {
-        trackball.rotateUp(drag.delta.y * 100);
-        trackball.rotateLeft(drag.delta.x * 100);
-    };
-    
-    // auto freefly = Camera::Freefly{};
-    // ctx.mouse_moved = [&](p6::MouseMove move) {
-    //   freefly.rotateLeft(move.delta.x * 100);
-    //   freefly.rotateUp(move.delta.y * 100);
-    // };
-
-    // ctx.key_repeated = [&](p6::Key key) {
-    //     const float step = .05f;
-
-    //     switch(key.physical) {
-    //     case GLFW_KEY_W:
-    //         freefly.moveFront(step);
-    //         break;
-    //     case GLFW_KEY_S:
-    //         freefly.moveFront(-step);
-    //         break;
-    //     case GLFW_KEY_A:
-    //         freefly.moveLeft(-step);
-    //         break;
-    //     case GLFW_KEY_D:
-    //         freefly.moveLeft(step);
-    //         break;
-    //     default:
-
-    //         break;
-    //     }
-
-    // };
+    auto freefly = Camera::Freefly{};
 
     Window3D window;
 
     BoidsProgram boidsProgram{};
     CubeProgram aquarium;
     SkyboxProgram skybox;
+
+    Personnage perso{};
 
 
     
@@ -95,6 +62,9 @@ int main()
     boidsProgram.setVAO();
     aquarium.setVAO();
     skybox.setVAO();
+
+    perso.setVAO();
+    
 
 
    /////////////////////////////////////////////////////////////////////////////////////////
@@ -114,21 +84,26 @@ int main()
 
     ctx.update = [&]() {
         // auto view  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
-        auto view  = glm::translate(trackball.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
+        auto view  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
         auto normalMatrix     = glm::transpose(glm::inverse(view));
 
         glClearColor(0.f, 0.f, 0.f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // boidsProgram.drawBoids(boidsProgram.vao, boids, freefly, normalMatrix, projection, param, window);
-        boidsProgram.drawBoids(boidsProgram.vao, boids, trackball, normalMatrix, projection, param, window);
+        boidsProgram.drawBoids(boidsProgram.vao, boids, freefly, normalMatrix, projection, param, window);
 
         // cubeProgram.drawCube(cubeProgram.cubeVAO, freefly, normalMatrix, projection);
         // aquarium.drawCube(freefly, projection);
         // skybox.drawSkybox(freefly, projection);
 
-        aquarium.drawCube(trackball, projection);
-        skybox.drawSkybox(trackball, projection);
+        aquarium.drawCube(freefly, projection);
+        skybox.drawSkybox(freefly, projection);
+
+        perso.draw(freefly, normalMatrix, projection);
+
+        freefly.handleEvent(ctx);
+
 
 
    };

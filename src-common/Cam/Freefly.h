@@ -12,14 +12,13 @@ public:
     void moveLeft(float t);
     void moveFront(float t);
     void rotateLeft(float degrees);
+    void rotateRight(float degrees);
     void rotateUp(float degrees);
+    void rotateDown(float degrees);
 
-    void handle_event(p6::Context ctx);
-
-private:
+    void handleEvent(p6::Context &ctx);
     void computeDirectionVectors();
 
-private:
     // Spherical coordinate
     glm::vec3 _position{};
     float     _phi{p6::PI};
@@ -29,5 +28,6 @@ private:
     glm::vec3 _left;
     glm::vec3 _up;
 };
+
 
 } // namespace Camera

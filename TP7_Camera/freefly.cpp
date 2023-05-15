@@ -134,6 +134,13 @@ int main()
     // VBO
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     const std::vector<glimac::ShapeVertex> vertices = glimac::sphere_vertices(1.f, 32, 16);
+    for (int i = 0; i<vertices.size(); i++){
+        std::cout<<"vertices"<<i<<":"<<&vertices[i]<<std::endl;
+        std::cout<<"position"<<i<<":"<<&vertices[i].position<<std::endl;
+        std::cout<<"normal"<<i<<":"<<&vertices[i].normal<<std::endl;
+        std::cout<<"texCoords"<<i<<":"<<&vertices[i].texCoords<<std::endl;
+    }
+
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glimac::ShapeVertex), vertices.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 

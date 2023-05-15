@@ -9,35 +9,30 @@ Freefly::Freefly(glm::vec3 position, float phi, float theta)
     computeDirectionVectors();
 }
 
-void Freefly::handle_event(p6::Context ctx){
-        ctx.mouse_moved = [&](p6::MouseMove move) {
-            rotateLeft(move.delta.x * 100);
-            rotateUp(move.delta.y * 100);
+void Freefly::handleEvent(p6::Context &ctx){
+
+    const float step = .05f;
+    if (ctx.key_is_pressed(GLFW_KEY_W))
+        moveFront(step);
+    if (ctx.key_is_pressed(GLFW_KEY_S))
+        moveFront(-step);
+    if (ctx.key_is_pressed(GLFW_KEY_A))
+        moveLeft(-step);
+    if (ctx.key_is_pressed(GLFW_KEY_D))
+        moveLeft(step);
+
+
+    if (ctx.key_is_pressed(GLFW_KEY_K))
+        rotateDown(step * 100);;
+    if (ctx.key_is_pressed(GLFW_KEY_I))
+    rotateUp(step * 100);
+    if (ctx.key_is_pressed(GLFW_KEY_L))
+        rotateLeft(step * 100);
+    if (ctx.key_is_pressed(GLFW_KEY_J))
+        rotateRight(step * 100);
     };
 
-    ctx.key_repeated = [&](p6::Key key) {
-        const float step = .05f;
 
-        switch(key.physical) {
-        case GLFW_KEY_W:
-            moveFront(step);
-            break;
-        case GLFW_KEY_S:
-            moveFront(-step);
-            break;
-        case GLFW_KEY_A:
-            moveLeft(-step);
-            break;
-        case GLFW_KEY_D:
-            moveLeft(step);
-            break;
-        default:
-
-            break;
-        }
-
-    };
-}
 void Freefly::computeDirectionVectors()
 {
     _front = glm::vec3{
@@ -70,10 +65,24 @@ void Freefly::rotateLeft(float degrees)
     computeDirectionVectors();
 }
 
+void Freefly::rotateRight(float degrees)
+{
+    const auto radians = degrees * p6::PI / 180;
+    _phi += radians;
+    computeDirectionVectors();
+}
+
 void Freefly::rotateUp(float degrees)
 {
     const auto radians = degrees * p6::PI / 180;
     _theta += radians;
+    computeDirectionVectors();
+}
+
+void Freefly::rotateDown(float degrees)
+{
+    const auto radians = degrees * p6::PI / 180;
+    _theta -= radians;
     computeDirectionVectors();
 }
 

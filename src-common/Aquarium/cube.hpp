@@ -89,10 +89,10 @@ struct CubeProgram {
 
         };
 
-    void drawCube(Camera::Trackball trackball, glm::mat4 projection){
+    void drawCube(Camera::Freefly freefly, glm::mat4 projection){
                 ////////////////////////CUBE/////////////////////////////////////////
         glm::mat4 model = glm::mat4( 1.0f );
-        glm::mat4 view  = trackball.getViewMatrix();
+        glm::mat4 view  = freefly.getViewMatrix();
 
         shader.use();
 
