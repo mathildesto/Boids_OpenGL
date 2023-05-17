@@ -95,14 +95,9 @@ int main()
 
         freefly.handleEvent(ctx);
         
-        // boidsProgram.drawBoids(boidsProgram.vao, boids, freefly, normalMatrix, projection, param, window);
-
-        // cubeProgram.drawCube(cubeProgram.cubeVAO, freefly, normalMatrix, projection);
+        boidsProgram.drawBoids(boidsProgram.vao, boids, freefly, normalMatrix, projection, param, window);
         aquarium.drawCube(freefly, projection);
         skybox.drawSkybox(freefly, projection);
-
-        // aquarium.drawCube(freefly, projection);
-        // skybox.drawSkybox(freefly, projection);
 
     
    };
