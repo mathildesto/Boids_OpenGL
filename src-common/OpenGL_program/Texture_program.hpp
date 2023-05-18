@@ -24,6 +24,24 @@ class TextureLoading{
         return textureID;
     }
 
+    static GLuint LoadImageTexture(const GLchar *path){
+        GLuint textureID = 0;
+        const auto texture = p6::load_image_buffer(path);
+
+        glGenTextures(1, &textureID);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.width(), texture.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, texture.data());
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        //glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+
+        return textureID;
+    }
+
      static GLuint LoadCubemap( std::vector<const GLchar * > faces)
     {
         GLuint textureID;
