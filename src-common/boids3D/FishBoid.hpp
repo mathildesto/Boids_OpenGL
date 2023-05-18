@@ -12,7 +12,7 @@
 #include "OpenGL_program/Texture_program.hpp"
 
 
-struct FishProgram {
+struct FishBoidProgram {
     p6::Shader m_Program;
 
     GLint uMVPMatrix;
@@ -32,7 +32,7 @@ struct FishProgram {
 
     std::vector<unsigned int> indices;
 
-    FishProgram() : m_Program(p6::load_shader("shaders/3D.vs.glsl", "shaders/directionalLight.fs.glsl"))
+    FishBoidProgram() : m_Program(p6::load_shader("shaders/3D.vs.glsl", "shaders/directionalLight.fs.glsl"))
     {
         uMVPMatrix    = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
         uMVMatrix     = glGetUniformLocation(m_Program.id(), "uMVMatrix");
@@ -48,8 +48,21 @@ struct FishProgram {
         uLightIntensity = glGetUniformLocation(m_Program.id(), "uLightIntensity");
 
         fishTexture = TextureLoading::LoadImageTexture("assets/models/fish.jpg");
-        // fishTexture = TextureLoading::LoadImageTexture("assets/texture/water.jpg");
 
+    }
+
+    void resize(ParamBoids3D& param, std::vector<Boid3D> & boids){
+    int dif = static_cast<int>(boids.size()) - param.numberOfBoids;
+    if (dif < 0) {
+        for (int i = 0; i < -dif; i++) {
+            boids.push_back(Boid3D());
+            }
+        } 
+    else if (dif > 0) {
+        for (int i = 0; i < dif; i++) {
+            boids.pop_back();
+            }
+        }
     }
 
     void setVAO(){
@@ -108,13 +121,12 @@ struct FishProgram {
 
         };
 
-    void draw(Camera::Freefly freefly, p6::Context &ctx){
+    void draw(Camera::Freefly freefly, std::vector<Boid3D>& boids, p6::Context &ctx, ParamBoids3D& param,  Window3D& window){
         
         auto       modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.5f));
         auto const projectionMatrix = glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), .1f, 100.f); // fov, aspect ratio, near, far
         auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
-        modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{0.02f});
-        modelViewMatrix = glm::rotate(modelViewMatrix, 300.f, glm::vec3(1.0, 0.0, 0.0));
+    
 
         m_Program.use();
 
@@ -124,11 +136,7 @@ struct FishProgram {
         glUniform1i(uTexture, 0);
 
         glBindVertexArray(vao);
-
-        glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projectionMatrix * modelViewMatrix));
-        glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(modelViewMatrix));
-        glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(normalMatrix));
-
+        
         glUniform3fv(uKa, 1, glm::value_ptr(glm::vec3(1.0, 1.0, 1.0)));
         glUniform3fv(uKd, 1, glm::value_ptr(glm::vec3(0.8, 0.8, 0.8)));
         glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
@@ -137,7 +145,31 @@ struct FishProgram {
         glUniform3fv(uLightPos_vs, 1, glm::value_ptr(glm::vec3(-3, -3, -3)));
         glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(1, 1, 1)));
 
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+        
+        for (size_t i = 0; i < boids.size(); i++)
+        {
+            // modelViewMatrix = glm::translate(glm::mat4{1}, glm::vec3(0.f, 0.f, -5.f));
+            modelViewMatrix = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
+            modelViewMatrix = glm::translate(modelViewMatrix, boids[i].position);
+            // modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{param.boidSize});
+                        modelViewMatrix = glm::rotate(modelViewMatrix, 300.f, glm::vec3(1.0, 0.0, 0.0));
+
+            modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{0.001f});
+
+
+            // normalMatrix    = glm::transpose(glm::inverse(modelViewMatrix));
+
+           glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(modelViewMatrix));
+           glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projectionMatrix * modelViewMatrix));
+           glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+
+            glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+       }
+
+        update_position(boids,window, param);
+
+        //Variation du nombre de boids
+        resize(param, boids);
 
         glBindVertexArray(0);
     };

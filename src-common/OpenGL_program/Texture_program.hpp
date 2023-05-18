@@ -40,6 +40,7 @@ class TextureLoading{
         glBindTexture(GL_TEXTURE_2D, 0);
 
         return textureID;
+
     }
 
      static GLuint LoadCubemap( std::vector<const GLchar * > faces)

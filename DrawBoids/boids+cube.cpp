@@ -17,6 +17,8 @@
 #include "Aquarium/perso.hpp"
 #include "Aquarium/skybox.hpp"
 
+#include "boids3D/FishBoid.hpp"
+
 
 
 static void render_gui(ParamBoids3D& param, Window3D& window){
@@ -52,6 +54,10 @@ int main()
     CubeProgram aquarium;
     SkyboxProgram skybox;
 
+    // FishProgram fish;
+
+    FishBoidProgram fishBoid;
+
     Personnage perso{};
 
 
@@ -62,6 +68,8 @@ int main()
     boidsProgram.setVAO();
     aquarium.setVAO();
     skybox.setVAO();
+
+    // fish.setVAO();
 
     perso.setVAO();
     
@@ -83,13 +91,11 @@ int main()
     auto projection = glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), .1f, 100.f); 
 
     ctx.update = [&]() {
-        auto view  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
+        auto view  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.5f));
         auto normalMatrix     = glm::transpose(glm::inverse(view));
 
         glClearColor(0.f, 0.f, 0.f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        // perso.renderThirdPerson(freefly, normalMatrix, projection);
 
         perso.draw(freefly, normalMatrix, projection);
 
@@ -99,6 +105,7 @@ int main()
         aquarium.drawCube(freefly, projection);
         skybox.drawSkybox(freefly, projection);
 
+        // fish.draw(freefly,boids,ctx,param, window);
     
    };
 
