@@ -8,6 +8,8 @@
 #include "Cam/Trackball.h"
 #include<cmath>
 #include "glimac/sphere_vertices.hpp"
+#include "OpenGL_program/Texture_program.hpp"
+
 
 struct Personnage {
     p6::Shader m_Program;
@@ -15,15 +17,16 @@ struct Personnage {
     GLint uMVPMatrix;
     GLint uMVMatrix;
     GLint uNormalMatrix;
-    GLint uEarthTexture;
-    GLint uCloudTexture;
+
+    GLint uTexture;
+
     GLint uKdVector;
     GLint uKsVector;
     GLint uShininessFloat; 
     GLint uLightDirVector;   
     GLint uLightIntensityVector;
 
-    GLuint vbo, vao;
+    GLuint vbo, vao, textureID;
 
     // Spherical coordinate
     glm::vec3 _position{};
@@ -36,13 +39,16 @@ struct Personnage {
         uMVPMatrix              = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
         uMVMatrix               = glGetUniformLocation(m_Program.id(), "uMVMatrix");
         uNormalMatrix           = glGetUniformLocation(m_Program.id(), "uNormalMatrix");
-        uEarthTexture           = glGetUniformLocation(m_Program.id(), "uEarthTexture");
-        uCloudTexture           = glGetUniformLocation(m_Program.id(), "uCloudTexture");
+
         uKdVector               = glGetUniformLocation(m_Program.id(), "uKd");
         uKsVector               = glGetUniformLocation(m_Program.id(), "uKs");
         uShininessFloat         = glGetUniformLocation(m_Program.id(), "uShininess");
         uLightDirVector         = glGetUniformLocation(m_Program.id(), "uLightDir_vs");
         uLightIntensityVector   = glGetUniformLocation(m_Program.id(), "uLightIntensity");
+
+        uTexture = glGetUniformLocation(m_Program.id(), "uTexture");
+        textureID = TextureLoading::LoadImageTexture("assets/textures/MoonMap.jpg");
+
 
     }
 

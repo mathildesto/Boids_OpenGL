@@ -21,39 +21,39 @@ struct FishProgram {
 
     GLint uTexture;
 
-    GLint uKa;
-    GLint uKd;
-    GLint uKs;
-    GLint uShininess;
-    GLint uLightPos_vs;
-    GLint uLightIntensity;
+    GLint uKdVector;
+    GLint uKsVector;
+    GLint uShininessFloat; 
+    GLint uLightDirVector;   
+    GLint uLightIntensityVector;
 
-    GLuint vbo, vao, ibo, fishTexture;
+    GLuint vbo, vao, ibo, textureID;
 
     std::vector<unsigned int> indices;
 
-    FishProgram() : m_Program(p6::load_shader("shaders/3D.vs.glsl", "shaders/directionalLight.fs.glsl"))
+    FishProgram() : m_Program(p6::load_shader("shaders/3D_light.vs.glsl", "shaders/directionalLight.fs.glsl"))
     {
-        uMVPMatrix    = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
-        uMVMatrix     = glGetUniformLocation(m_Program.id(), "uMVMatrix");
-        uNormalMatrix = glGetUniformLocation(m_Program.id(), "uNormalMatrix");
+        uMVPMatrix              = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
+        uMVMatrix               = glGetUniformLocation(m_Program.id(), "uMVMatrix");
+        uNormalMatrix           = glGetUniformLocation(m_Program.id(), "uNormalMatrix");
+
+        uKdVector               = glGetUniformLocation(m_Program.id(), "uKd");
+        uKsVector               = glGetUniformLocation(m_Program.id(), "uKs");
+        uShininessFloat         = glGetUniformLocation(m_Program.id(), "uShininess");
+        uLightDirVector         = glGetUniformLocation(m_Program.id(), "uLightDir_vs");
+        uLightIntensityVector   = glGetUniformLocation(m_Program.id(), "uLightIntensity");
 
         uTexture = glGetUniformLocation(m_Program.id(), "uTexture");
-
-        uKa             = glGetUniformLocation(m_Program.id(), "uKa");
-        uKd             = glGetUniformLocation(m_Program.id(), "uKd");
-        uKs             = glGetUniformLocation(m_Program.id(), "uKs");
-        uShininess      = glGetUniformLocation(m_Program.id(), "uShininess");
-        uLightPos_vs    = glGetUniformLocation(m_Program.id(), "uLightPos_vs");
-        uLightIntensity = glGetUniformLocation(m_Program.id(), "uLightIntensity");
-
-        fishTexture = TextureLoading::LoadImageTexture("assets/models/fish.jpg");
+        textureID = TextureLoading::LoadImageTexture("assets/models/fish.jpg");
+        // textureID = TextureLoading::LoadImageTexture("assets/models/texture_cube_test.jpg");
 
     }
 
     void setVAO(){
 
         // std::string inputfile = "assets/models/shark.obj";
+        // std::string inputfile = "assets/models/cube_test.obj";
+
         std::string inputfile = "assets/models/12265_Fish_v1_L2.obj";
 
 
@@ -85,7 +85,8 @@ struct FishProgram {
     glBindVertexArray(vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, attrib.vertices.size() * sizeof(float), &attrib.vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, attrib.vertices.size() * sizeof(float), attrib.vertices.data(), GL_STATIC_DRAW);
+
 
     for (const auto& shape : shapes) {
         for (const auto& index : shape.mesh.indices) {
@@ -97,12 +98,12 @@ struct FishProgram {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
     // Set up the vertex attributes
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); // position
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(3 * sizeof(float))); // normal
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)(6 * sizeof(float))); // texture coordinate
+    glEnableVertexAttribArray(10);
+    glVertexAttribPointer(10, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); // position
+    glEnableVertexAttribArray(11);
+    glVertexAttribPointer(11, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(3 * sizeof(float))); // normal
+    glEnableVertexAttribArray(12);
+    glVertexAttribPointer(12, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)(6 * sizeof(float))); // texture coordinate
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -110,18 +111,17 @@ struct FishProgram {
         };
 
     void draw(Camera::Freefly freefly, p6::Context &ctx){
-        
+        m_Program.use();
+ 
         auto       modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.5f));
         auto const projectionMatrix = glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), .1f, 100.f); // fov, aspect ratio, near, far
         auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
         modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{0.1f});
         modelViewMatrix = glm::rotate(modelViewMatrix, 300.f, glm::vec3(1.0, 0.0, 0.0));
 
-        m_Program.use();
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, fishTexture);
-
+        glBindTexture(GL_TEXTURE_2D, textureID);
         glUniform1i(uTexture, 0);
 
         glBindVertexArray(vao);
@@ -130,13 +130,11 @@ struct FishProgram {
         glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(modelViewMatrix));
         glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
-        glUniform3fv(uKa, 1, glm::value_ptr(glm::vec3(1.0, 1.0, 1.0)));
-        glUniform3fv(uKd, 1, glm::value_ptr(glm::vec3(0.8, 0.8, 0.8)));
-        glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-        glUniform1f(uShininess, 0.6);
-
-        glUniform3fv(uLightPos_vs, 1, glm::value_ptr(glm::vec3(-3, -3, -3)));
-        glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(1, 1, 1)));
+        glUniform3fv(uKdVector, 1, glm::value_ptr(glm::vec3{0.5, 0.5, 0.5}));
+        glUniform3fv(uKsVector, 1, glm::value_ptr(glm::vec3{0.5, 0.5, 0.5}));
+        glUniform1f(uShininessFloat, 1.f);
+        glUniform3fv(uLightDirVector, 1, glm::value_ptr(glm::vec3(glm::mat4{1} * glm::vec4{1.f,1.f,1.f, 1.f}))); 
+        glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{1.f, 1.f, 1.f}));
 
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 

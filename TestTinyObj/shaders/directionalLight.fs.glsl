@@ -1,44 +1,40 @@
-#version 330
-
-//variables d'entrées
-in vec3 vPosition_vs; //w0 normalize(-vPos)
-in vec3 vNormal_vs;
-in vec2 vTexCoords;
-
-out vec4 fFragColor;
-
-uniform sampler2D uTexture;
+#version 330 core
 
 uniform vec3 uKd;
 uniform vec3 uKs;
 uniform float uShininess;
+uniform vec3 uLightDir_vs;
+uniform vec3 uLightIntensity;
 
-uniform vec3 uLightDir_vs; //wi (need normalization)
-uniform vec3 uLightPos_vs;
-uniform vec3 uLightIntensity; //Li
+uniform sampler2D uTexture; // Texture
 
-/* _vs = travailler dans le view space;
-=> la direction de la lumière *  View Matrix */
+in vec3 vPosition_vs; // Position du sommet transformée dans l'espace View (vs)
+in vec3 vNormal_vs; // Normale du sommet transformée dans l'espace View (vs)
+in vec2 vTexCoords; // Coordonnées de texture du sommet
 
+out vec4 fFragColor;
 
 vec3 blinnPhong() {
-    vec3 Li = uLightIntensity;
-    vec3 N = normalize(vNormal_vs);
-    vec3 w0 = normalize(-vPosition_vs);
     vec3 wi = normalize(uLightDir_vs);
-    vec3 halfVector = (w0 + wi)/2.f;
+    vec3 wo = normalize(-vPosition_vs);
+    vec3 halfVector = (wo + wi) / 2.0;
 
-    return Li*(uKd*max(dot(wi, N), 0.) + uKs*max(pow(dot(halfVector, N), 0.), uShininess));
+    return uLightIntensity * (uKd * dot(wi, vNormal_vs) + uKs * pow(dot(halfVector, vNormal_vs), uShininess));
 }
 
 void main() {
-    //vec4 color1 = texture(uTexture, vTexCoords);
-    //fFragColor = vec4(blinnPhong(), 1) + color1;
-    //fFragColor = vec4(blinnPhong(), 1);
-
+    // Échantillonne la couleur de la texture à partir des coordonnées de texture
     vec4 texColor = texture(uTexture, vTexCoords);
+
+    // Applique la couleur de la texture sur le terme de réflexion diffuse
+    vec3 diffuseColor = texColor.rgb * uKd;
+
+    // Calcule la contribution de la lumière selon la méthode de Blinn-Phong
     vec3 lighting = blinnPhong();
-    fFragColor = vec4(texColor.rgb * lighting, texColor.a);
-    //fFragColor = vec4(vTexCoords, 0, 0);
-    //fFragColor = vec4(texColor.rgb, 1);
+
+    // Combinaison de la couleur de la texture et de l'éclairage
+    vec3 finalColor = diffuseColor * lighting;
+
+    // Résultat final
+    fFragColor = vec4(finalColor, 1.0);
 }

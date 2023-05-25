@@ -25,19 +25,8 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
 
-    FishBoidProgram fishBoid{};
-
     FishProgram fish{}; 
     fish.setVAO();
-
-    fishBoid.setVAO();
-
-    
-    ParamBoids3D param;
-    Window3D window;
-
-    std::vector<Boid3D> boids = initialise_positions(10);
-
 
     /* Loop until the user closes the window */
     ctx.update = [&]() {
@@ -45,12 +34,8 @@ int main()
         glClearColor(0.2f, 0.2f, 0.2f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        // fish.draw(freefly, ctx);
         freefly.handleEvent(ctx);
-
         fish.draw(freefly, ctx);
-
-        // fishBoid.draw(freefly,boids,ctx,param, window);
 
     };
 

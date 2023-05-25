@@ -81,6 +81,10 @@
     void Personnage::draw(Camera::Freefly &freefly, glm::mat4 &projectionMatrix){
         m_Program.use();
 
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glUniform1i(uTexture, 0);
+
         auto modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
         auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
 
@@ -93,11 +97,11 @@
        glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projectionMatrix * modelViewMatrix));
        glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
-       glUniform3fv(uKdVector, 1, glm::value_ptr(glm::vec3{0.5, 0.0, 0.0}));
-       glUniform3fv(uKsVector, 1, glm::value_ptr(glm::vec3{0.5, 0.0, 0.0}));
-       glUniform1f(uShininessFloat, 1.f);
-       glUniform3fv(uLightDirVector, 1, glm::value_ptr(glm::vec3(modelViewMatrix * glm::vec4{2.f,2.f,2.f, 1.f})));
-       glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{1.f, .3f, .5f}));
+        glUniform3fv(uKdVector, 1, glm::value_ptr(glm::vec3{0.5, 0.5, 0.5}));
+        glUniform3fv(uKsVector, 1, glm::value_ptr(glm::vec3{0.5, 0.5, 0.5}));
+        glUniform1f(uShininessFloat, 1.f);
+        glUniform3fv(uLightDirVector, 1, glm::value_ptr(glm::vec3(glm::mat4{1} * glm::vec4{1.f,1.f,1.f, 1.f}))); 
+        glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{1.f, 1.f, 1.f}));
 
        glDrawArrays(GL_TRIANGLES, 0, vertices.size()); // 3 car 3 sommets
 

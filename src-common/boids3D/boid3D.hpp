@@ -8,7 +8,7 @@
 struct ParamBoids3D{
     int numberOfBoids = 50;
 
-    float boidSize = 0.02f;
+    float boidSize = 0.005f;
 
     float visualRange = 0.3 ; 
     float protectedRange = 0.08 ; 
@@ -18,21 +18,11 @@ struct ParamBoids3D{
     float avoidfactor =  0.03;
     float matchingfactor = 0.03;
     
-    float maxspeed = 0.01;
-    float minspeed = 0.005;
+    float maxspeed = 0.001;
+    float minspeed = 0.0001;
 };
 
 struct Window3D {
-
-    // float WINDOW_MIN_X = -3.;
-    // float WINDOW_MAX_X = 3;
-
-    // float WINDOW_MIN_Y = -2.;
-    // float WINDOW_MAX_Y = 2.;
-
-    // float WINDOW_MIN_Z = -2.;
-    // float WINDOW_MAX_Z = 2.;
-
     
     float WINDOW_MIN_X = -0.5;
     float WINDOW_MAX_X = 0.5;
