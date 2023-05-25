@@ -50,7 +50,7 @@ struct Personnage {
 
     void updatePosition(Camera::Freefly& camera);
 
-    void draw(Camera::Freefly& freefly, glm::mat4 &normalMatrix, glm::mat4 &projectionMatrix);
+    void draw(Camera::Freefly& freefly, glm::mat4 &projectionMatrix);
 
 
 };

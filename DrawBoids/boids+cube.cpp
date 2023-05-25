@@ -53,30 +53,18 @@ int main()
     BoidsProgram boidsProgram{};
     CubeProgram aquarium;
     SkyboxProgram skybox;
-
-    // FishProgram fish;
-
     FishBoidProgram fishBoid;
 
     Personnage perso{};
 
-
-    
-
-   glEnable(GL_DEPTH_TEST); // 3D
+    glEnable(GL_DEPTH_TEST); // 3D
 
     boidsProgram.setVAO();
     aquarium.setVAO();
     skybox.setVAO();
-
-    // fish.setVAO();
-
+    fishBoid.setVAO();
     perso.setVAO();
     
-
-
-   /////////////////////////////////////////////////////////////////////////////////////////
-
     ParamBoids3D param;
     std::vector<Boid3D> boids = initialise_positions(10);
 
@@ -91,21 +79,18 @@ int main()
     auto projection = glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), .1f, 100.f); 
 
     ctx.update = [&]() {
-        auto view  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.5f));
-        auto normalMatrix     = glm::transpose(glm::inverse(view));
+        auto modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 2.f));
 
-        glClearColor(0.f, 0.f, 0.f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        perso.draw(freefly, normalMatrix, projection);
+        perso.draw(freefly, projection);
 
         freefly.handleEvent(ctx);
-        
-        boidsProgram.drawBoids(boidsProgram.vao, boids, freefly, normalMatrix, projection, param, window);
-        aquarium.drawCube(freefly, projection);
-        skybox.drawSkybox(freefly, projection);
 
-        // fish.draw(freefly,boids,ctx,param, window);
+        fishBoid.draw(boids, projection, modelViewMatrix, param, window);
+        // boidsProgram.drawBoids(boids, projection, modelViewMatrix, param, window);
+        aquarium.drawCube(projection, modelViewMatrix);
+        skybox.drawSkybox(freefly, projection);
     
    };
 

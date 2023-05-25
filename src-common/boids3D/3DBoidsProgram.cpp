@@ -70,9 +70,12 @@
         /** FIN VAO **/
     }
 
-void BoidsProgram::drawBoids(GLuint vao, std::vector<Boid3D>& boids, Camera::Freefly freefly, glm::mat4 normalMatrix, glm::mat4 projectionMatrix, ParamBoids3D& param, Window3D& window){
+void BoidsProgram::drawBoids(std::vector<Boid3D>& boids, glm::mat4 projectionMatrix, glm::mat4 MVMatrix, ParamBoids3D& param, Window3D& window){
         m_Program.use();
-        auto modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glUniform1i(uTexture, 0);
 
         glBindVertexArray(vao);
 
@@ -88,7 +91,8 @@ void BoidsProgram::drawBoids(GLuint vao, std::vector<Boid3D>& boids, Camera::Fre
         for (size_t i = 0; i < boids.size(); i++)
         {
             // modelViewMatrix = glm::translate(glm::mat4{1}, glm::vec3(0.f, 0.f, -5.f));
-            modelViewMatrix = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
+            auto modelViewMatrix  = MVMatrix;
+            auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
             modelViewMatrix = glm::translate(modelViewMatrix, boids[i].position);
             modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{param.boidSize});
             // normalMatrix    = glm::transpose(glm::inverse(modelViewMatrix));

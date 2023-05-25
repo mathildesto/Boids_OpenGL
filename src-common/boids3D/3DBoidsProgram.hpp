@@ -8,6 +8,8 @@
 #include "Cam/Trackball.h"
 #include<cmath>
 #include "glimac/sphere_vertices.hpp"
+#include "OpenGL_program/Texture_program.hpp"
+
 
 struct BoidsProgram {
     p6::Shader m_Program;
@@ -15,15 +17,16 @@ struct BoidsProgram {
     GLint uMVPMatrix;
     GLint uMVMatrix;
     GLint uNormalMatrix;
-    GLint uEarthTexture;
-    GLint uCloudTexture;
+
+    GLint uTexture;
+
     GLint uKdVector;
     GLint uKsVector;
     GLint uShininessFloat; 
     GLint uLightDirVector;   
     GLint uLightIntensityVector;
 
-    GLuint vbo, vao;
+    GLuint vbo, vao, textureID;
 
     const std::vector<glimac::ShapeVertex> vertices = glimac::sphere_vertices(1.f, 32, 16);
 
@@ -33,13 +36,16 @@ struct BoidsProgram {
         uMVPMatrix              = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
         uMVMatrix               = glGetUniformLocation(m_Program.id(), "uMVMatrix");
         uNormalMatrix           = glGetUniformLocation(m_Program.id(), "uNormalMatrix");
-        uEarthTexture           = glGetUniformLocation(m_Program.id(), "uEarthTexture");
-        uCloudTexture           = glGetUniformLocation(m_Program.id(), "uCloudTexture");
+
         uKdVector               = glGetUniformLocation(m_Program.id(), "uKd");
         uKsVector               = glGetUniformLocation(m_Program.id(), "uKs");
         uShininessFloat         = glGetUniformLocation(m_Program.id(), "uShininess");
         uLightDirVector         = glGetUniformLocation(m_Program.id(), "uLightDir_vs");
         uLightIntensityVector   = glGetUniformLocation(m_Program.id(), "uLightIntensity");
+
+        uTexture           = glGetUniformLocation(m_Program.id(), "uTexture");
+        textureID = TextureLoading::LoadImageTexture("assets/textures/EarthMap.jpg");
+
 
     }
 
@@ -59,5 +65,5 @@ struct BoidsProgram {
 
     void setVAO();
 
-    void drawBoids(GLuint vao, std::vector<Boid3D>& boids, Camera::Freefly freefly, glm::mat4 normalMatrix, glm::mat4 projectionMatrix, ParamBoids3D& param, Window3D& window);
+    void drawBoids( std::vector<Boid3D>& boids, glm::mat4 projectionMatrix, glm::mat4 MVMatrix, ParamBoids3D& param, Window3D& window);
 };

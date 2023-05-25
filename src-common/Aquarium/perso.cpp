@@ -78,10 +78,12 @@
 
     }
 
-    void Personnage::draw(Camera::Freefly &freefly, glm::mat4 &normalMatrix, glm::mat4 &projectionMatrix){
+    void Personnage::draw(Camera::Freefly &freefly, glm::mat4 &projectionMatrix){
         m_Program.use();
 
         auto modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
+        auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
+
         modelViewMatrix = glm::translate(modelViewMatrix,  _position);
         modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{0.07f});
 

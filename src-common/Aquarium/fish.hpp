@@ -48,13 +48,14 @@ struct FishProgram {
         uLightIntensity = glGetUniformLocation(m_Program.id(), "uLightIntensity");
 
         fishTexture = TextureLoading::LoadImageTexture("assets/models/fish.jpg");
-        // fishTexture = TextureLoading::LoadImageTexture("assets/texture/water.jpg");
 
     }
 
     void setVAO(){
 
+        // std::string inputfile = "assets/models/shark.obj";
         std::string inputfile = "assets/models/12265_Fish_v1_L2.obj";
+
 
         tinyobj::attrib_t attrib;
         std::vector<tinyobj::shape_t> shapes;
@@ -113,7 +114,7 @@ struct FishProgram {
         auto       modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.5f));
         auto const projectionMatrix = glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), .1f, 100.f); // fov, aspect ratio, near, far
         auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
-        modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{0.02f});
+        modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{0.1f});
         modelViewMatrix = glm::rotate(modelViewMatrix, 300.f, glm::vec3(1.0, 0.0, 0.0));
 
         m_Program.use();

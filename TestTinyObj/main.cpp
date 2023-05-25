@@ -26,6 +26,10 @@ int main()
     glEnable(GL_DEPTH_TEST);
 
     FishBoidProgram fishBoid{};
+
+    FishProgram fish{}; 
+    fish.setVAO();
+
     fishBoid.setVAO();
 
     
@@ -44,7 +48,9 @@ int main()
         // fish.draw(freefly, ctx);
         freefly.handleEvent(ctx);
 
-        fishBoid.draw(freefly,boids,ctx,param, window);
+        fish.draw(freefly, ctx);
+
+        // fishBoid.draw(freefly,boids,ctx,param, window);
 
     };
 
