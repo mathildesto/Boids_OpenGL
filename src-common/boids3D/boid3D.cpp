@@ -186,11 +186,19 @@ void update_position(std::vector<Boid3D>& boids, Window3D &window, ParamBoids3D 
 
         limit_speed(param, boid);
 
-    //Update boid's position
-        // boid.position[0] += boid.velocity[0];
-        // boid.position[1] += boid.velocity[1];
-
         boid.add_velocity();
+                
+        // Update boid's orientation
+        glm::vec3 direction = glm::normalize(boid.velocity);
+        // Calculate the angles for rotation
+        float yaw = glm::degrees(atan2(direction.x, direction.z));
+        float pitch = glm::degrees(asin(-direction.y));
+        float roll = glm::degrees(atan2(direction.y, direction.x));
+
+
+        // Set the boid's orientation
+        // Assuming you have a `glm::vec3` member variable named `orientation` in the `Boid3D` struct
+        boid.orientation = glm::vec3(pitch, yaw, roll);
     }
 }
 

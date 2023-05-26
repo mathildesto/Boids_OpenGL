@@ -33,10 +33,10 @@ static void render_gui(ParamBoids3D& param, Window3D& window){
         ImGui::SliderFloat("avoidfactor", &param.avoidfactor, 0.f, 0.1f);
         ImGui::SliderFloat("matchingfactor", &param.matchingfactor, 0.f, 0.1f);
 
-        ImGui::SliderFloat("MaxSpeed", &param.maxspeed, 0.f, 0.05f);
-        ImGui::SliderFloat("MinSpeed", &param.minspeed, 0.f, 0.05f);
+        ImGui::SliderFloat("MaxSpeed", &param.maxspeed, 0.f, 0.01f);
+        ImGui::SliderFloat("MinSpeed", &param.minspeed, 0.f, 0.0005f);
 
-        ImGui::SliderFloat("Size", &param.boidSize, 0.f, 0.5f);
+        ImGui::SliderFloat("Size", &param.boidSize, 0.f, 0.05f);
 }
 
 

@@ -9,6 +9,8 @@
 #include<cmath>
 #include "glimac/sphere_vertices.hpp"
 #include "OpenGL_program/Texture_program.hpp"
+#include "tinyobjloader/tiny_obj_loader.h"
+
 
 
 struct Personnage {
@@ -26,13 +28,12 @@ struct Personnage {
     GLint uLightDirVector;   
     GLint uLightIntensityVector;
 
-    GLuint vbo, vao, textureID;
+    GLuint vbo, vao, ibo, textureID;
 
     // Spherical coordinate
     glm::vec3 _position{};
 
-    const std::vector<glimac::ShapeVertex> vertices = glimac::sphere_vertices(1.f, 32, 16);
-
+    std::vector<unsigned int> indices;
 
     Personnage(glm::vec3 position = {}) : _position(position), m_Program(p6::load_shader("shaders/3D_light.vs.glsl", "shaders/directionalLight.fs.glsl"))
     {

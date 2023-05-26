@@ -90,12 +90,10 @@ void BoidsProgram::drawBoids(std::vector<Boid3D>& boids, glm::mat4 projectionMat
 
         for (size_t i = 0; i < boids.size(); i++)
         {
-            // modelViewMatrix = glm::translate(glm::mat4{1}, glm::vec3(0.f, 0.f, -5.f));
             auto modelViewMatrix  = MVMatrix;
             auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
             modelViewMatrix = glm::translate(modelViewMatrix, boids[i].position);
-            modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{param.boidSize});
-            // normalMatrix    = glm::transpose(glm::inverse(modelViewMatrix));
+            modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{0.01});
 
            glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(modelViewMatrix));
            glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projectionMatrix * modelViewMatrix));

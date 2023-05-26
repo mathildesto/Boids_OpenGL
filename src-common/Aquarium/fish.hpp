@@ -116,8 +116,8 @@ struct FishProgram {
     glEnableVertexAttribArray(11);
     glVertexAttribPointer(11, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(3 * sizeof(float))); // normal
     glEnableVertexAttribArray(12);
-    // glVertexAttribPointer(12, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)(6 * sizeof(float))); // texture coordinate
-    glVertexAttribPointer(12, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // texture coordinate
+    glVertexAttribPointer(12, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)(6 * sizeof(float))); // texture coordinate
+    // glVertexAttribPointer(12, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // texture coordinate
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);

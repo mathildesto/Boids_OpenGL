@@ -143,9 +143,11 @@ struct FishBoidProgram {
             auto modelViewMatrix  = MVMatrix;
             auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
             modelViewMatrix = glm::translate(modelViewMatrix, boids[i].position);
-            modelViewMatrix = glm::rotate(modelViewMatrix, 300.f, glm::vec3(1.0, 0.0, 0.0));
             modelViewMatrix = glm::scale(modelViewMatrix,  glm::vec3{param.boidSize});
-            // modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{param.boidSize});
+
+            modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(boids[i].orientation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+            modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(boids[i].orientation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+            modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(boids[i].orientation.x), glm::vec3(1.0f, 0.0f, 0.0f));
 
            glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(modelViewMatrix));
            glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projectionMatrix * modelViewMatrix));

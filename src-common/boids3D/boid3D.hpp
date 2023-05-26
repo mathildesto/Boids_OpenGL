@@ -18,7 +18,7 @@ struct ParamBoids3D{
     float avoidfactor =  0.03;
     float matchingfactor = 0.03;
     
-    float maxspeed = 0.001;
+    float maxspeed = 0.005;
     float minspeed = 0.0001;
 };
 
@@ -38,6 +38,9 @@ struct Boid3D {
     float size;
     glm::vec3 position;
     glm::vec3 velocity;
+    glm::vec3 orientation; 
+    glm::vec3 targetOrientation;
+
 
     Boid3D() {
         position = glm::vec3(p6::random::number(-0.5, 0.5), p6::random::number(-0.5, 0.5), p6::random::number(-0.5, 0.5));
