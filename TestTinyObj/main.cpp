@@ -13,6 +13,8 @@
 #include "glimac/common.hpp"
 
 #include "Aquarium/fish.hpp"
+#include "Aquarium/shark.hpp"
+
 #include "boids3D/FishBoid.hpp"
 
 
@@ -28,6 +30,9 @@ int main()
     FishProgram fish{}; 
     fish.setVAO();
 
+    SharkProgram shark{}; 
+    shark.setVAO();
+
     /* Loop until the user closes the window */
     ctx.update = [&]() {
 
@@ -35,7 +40,8 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         freefly.handleEvent(ctx);
-        fish.draw(freefly, ctx);
+        // fish.draw(freefly, ctx);
+        shark.draw(freefly, ctx);
 
     };
 
