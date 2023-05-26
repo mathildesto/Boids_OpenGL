@@ -44,17 +44,15 @@ struct FishProgram {
         uLightIntensityVector   = glGetUniformLocation(m_Program.id(), "uLightIntensity");
 
         uTexture = glGetUniformLocation(m_Program.id(), "uTexture");
-        // textureID = TextureLoading::LoadImageTexture("assets/models/fish.jpg");
-        textureID = TextureLoading::LoadImageTexture("assets/models/texture_cube_test.jpg");
+        textureID = TextureLoading::LoadImageTexture("assets/models/fish.jpg");
+        // textureID = TextureLoading::LoadImageTexture("assets/models/texture_cube_test.jpg");
 
     }
 
     void setVAO(){
 
-        // std::string inputfile = "assets/models/shark.obj";
-        std::string inputfile = "assets/models/cube_test.obj";
-
-        // std::string inputfile = "assets/models/12265_Fish_v1_L2.obj";
+        // std::string inputfile = "assets/models/cube_test.obj";
+        std::string inputfile = "assets/models/12265_Fish_v1_L2.obj";
 
 
         tinyobj::attrib_t attrib;
@@ -129,7 +127,7 @@ struct FishProgram {
     void draw(Camera::Freefly freefly, p6::Context &ctx){
         m_Program.use();
  
-        auto       modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.5f));
+        auto       modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 1.5f));
         auto const projectionMatrix = glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), .1f, 100.f); // fov, aspect ratio, near, far
         auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
         modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{0.1f});
