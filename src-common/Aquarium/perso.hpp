@@ -32,6 +32,7 @@ struct Personnage {
 
     // Spherical coordinate
     glm::vec3 _position{};
+    glm::quat _orientation{};
 
     std::vector<unsigned int> indices;
 

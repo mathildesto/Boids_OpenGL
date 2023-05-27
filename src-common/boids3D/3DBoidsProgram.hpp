@@ -65,5 +65,5 @@ struct BoidsProgram {
 
     void setVAO();
 
-    void drawBoids( std::vector<Boid3D>& boids, glm::mat4 projectionMatrix, glm::mat4 MVMatrix, ParamBoids3D& param, Window3D& window);
+    void drawBoids( std::vector<Boid3D>& boids, glm::mat4 projectionMatrix, glm::mat4 MVMatrix, ParamBoids3D& param, Window3D& window, p6::Context&ctx);
 };

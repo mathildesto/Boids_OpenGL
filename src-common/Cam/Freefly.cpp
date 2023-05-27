@@ -86,6 +86,7 @@ void Freefly::rotateDown(float degrees)
 
 glm::mat4 Freefly::getViewMatrix() const
 {
+    
     return glm::lookAt(_position, _position + _front, _up);
 }
 

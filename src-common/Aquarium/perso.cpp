@@ -86,10 +86,10 @@
         };
 
     void Personnage::updatePosition(Camera::Freefly& camera) {
-        float distanceFromCharacter = 0.5;
+        float distanceFromCharacter = 0.8;
 
         // Mise à jour de la position du personnage avec la position calculée de la caméra
-        _position = camera._position + camera._front * distanceFromCharacter;
+    _position = camera._position + camera._front * distanceFromCharacter;
 
     }
 
@@ -100,10 +100,14 @@
         glBindTexture(GL_TEXTURE_2D, textureID);
         glUniform1i(uTexture, 0);
 
-        auto modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 0.f));
+        auto modelViewMatrix = glm::translate(freefly.getViewMatrix(),  glm::vec3(_position.x, _position.y -0.2, _position.z));
+
         auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
 
-        modelViewMatrix = glm::translate(modelViewMatrix,  _position);
+        modelViewMatrix = glm::rotate(modelViewMatrix, freefly._phi, glm::vec3(0.0, 1.0, 0.0)); //y
+        modelViewMatrix = glm::rotate(modelViewMatrix, -freefly._theta, glm::vec3(1.0, 0.0, 0.0)); //X
+
+
         modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{0.05f});
         modelViewMatrix = glm::rotate(modelViewMatrix, 0.f, glm::vec3(0.0, 0.0, 1.0));
 

@@ -70,7 +70,7 @@
         /** FIN VAO **/
     }
 
-void BoidsProgram::drawBoids(std::vector<Boid3D>& boids, glm::mat4 projectionMatrix, glm::mat4 MVMatrix, ParamBoids3D& param, Window3D& window){
+void BoidsProgram::drawBoids(std::vector<Boid3D>& boids, glm::mat4 projectionMatrix, glm::mat4 MVMatrix, ParamBoids3D& param, Window3D& window, p6::Context&ctx){
         m_Program.use();
 
         glActiveTexture(GL_TEXTURE0);
@@ -102,7 +102,7 @@ void BoidsProgram::drawBoids(std::vector<Boid3D>& boids, glm::mat4 projectionMat
            glDrawArrays(GL_TRIANGLES, 0, vertices.size());
        }
 
-        update_position(boids, window, param);
+        update_position(boids, window, param, ctx);
 
         //Variation du nombre de boids
         resize(param, boids);

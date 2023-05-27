@@ -20,6 +20,8 @@ struct ParamBoids3D{
     
     float maxspeed = 0.005;
     float minspeed = 0.0001;
+
+    float smoothness = 0.0001;
 };
 
 struct Window3D {
@@ -38,8 +40,8 @@ struct Boid3D {
     float size;
     glm::vec3 position;
     glm::vec3 velocity;
-    glm::vec3 orientation; 
-    glm::vec3 targetOrientation;
+    // glm::vec3 orientation; 
+    // glm::vec3 targetOrientation;
 
 
     Boid3D() {
@@ -73,7 +75,7 @@ void separation(std::vector<Boid3D>& boids, ParamBoids3D &param, Boid3D &boid);
 void cohesion(std::vector<Boid3D>& boids, ParamBoids3D &param, Boid3D &boid);
 void alignment(std::vector<Boid3D>& boids, ParamBoids3D &param, Boid3D &boid);
 
-void update_position(std::vector<Boid3D>& boids, Window3D& window, ParamBoids3D &param);
+void update_position(std::vector<Boid3D>& boids, Window3D& window, ParamBoids3D &param, p6::Context&ctx);
 
 
 

@@ -118,8 +118,8 @@ struct FishBoidProgram {
 
         };
 
-    void draw(std::vector<Boid3D>& boids, glm::mat4 projectionMatrix, glm::mat4 MVMatrix, ParamBoids3D& param,  Window3D& window){    
-
+    void draw(std::vector<Boid3D>& boids, glm::mat4 projectionMatrix, glm::mat4 MVMatrix, ParamBoids3D& param,  Window3D& window, p6::Context&ctx){    
+        
         m_Program.use();
 
         glActiveTexture(GL_TEXTURE0);
@@ -145,9 +145,9 @@ struct FishBoidProgram {
             modelViewMatrix = glm::translate(modelViewMatrix, boids[i].position);
             modelViewMatrix = glm::scale(modelViewMatrix,  glm::vec3{param.boidSize});
 
-            modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(boids[i].orientation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-            modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(boids[i].orientation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-            modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(boids[i].orientation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+            // modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(boids[i].orientation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+            // modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(boids[i].orientation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+            // modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(boids[i].orientation.x), glm::vec3(1.0f, 0.0f, 0.0f));
 
            glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(modelViewMatrix));
            glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projectionMatrix * modelViewMatrix));
@@ -156,7 +156,7 @@ struct FishBoidProgram {
             glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
        }
 
-        update_position(boids,window, param);
+        update_position(boids,window, param, ctx);
 
         //Variation du nombre de boids
         resize(param, boids);

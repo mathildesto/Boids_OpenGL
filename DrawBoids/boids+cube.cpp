@@ -76,7 +76,7 @@ int main()
         ImGui::ShowDemoWindow();
     };
     
-    auto projection = glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), .1f, 100.f); 
+    auto projection = glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), .1f, 100.f);
 
     ctx.update = [&]() {
         auto modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 2.f));
@@ -87,7 +87,7 @@ int main()
 
         freefly.handleEvent(ctx);
 
-        fishBoid.draw(boids, projection, modelViewMatrix, param, window);
+        fishBoid.draw(boids, projection, modelViewMatrix, param, window, ctx);
         // boidsProgram.drawBoids(boids, projection, modelViewMatrix, param, window);
         aquarium.drawCube(projection, modelViewMatrix);
         skybox.drawSkybox(freefly, projection);
