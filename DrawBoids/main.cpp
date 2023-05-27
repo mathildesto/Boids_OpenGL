@@ -16,6 +16,8 @@
 #include "Aquarium/cube.hpp"
 #include "Aquarium/perso.hpp"
 #include "Aquarium/skybox.hpp"
+#include "Aquarium/plant.hpp"
+
 
 #include "boids3D/FishBoid.hpp"
 
@@ -54,8 +56,8 @@ int main()
     CubeProgram aquarium;
     SkyboxProgram skybox;
     FishBoidProgram fishBoid;
-
     Personnage perso{};
+    PlantProgram plant{};
 
     glEnable(GL_DEPTH_TEST); // 3D
 
@@ -64,6 +66,8 @@ int main()
     skybox.setVAO();
     fishBoid.setVAO();
     perso.setVAO();
+    plant.setVAO();
+
     
     ParamBoids3D param;
     std::vector<Boid3D> boids = initialise_positions(10);
@@ -89,6 +93,7 @@ int main()
 
         fishBoid.draw(boids, projection, modelViewMatrix, param, window, ctx);
         // boidsProgram.drawBoids(boids, projection, modelViewMatrix, param, window);
+        plant.draw(freefly,ctx);
         aquarium.drawCube(projection, modelViewMatrix);
         skybox.drawSkybox(freefly, projection);
     

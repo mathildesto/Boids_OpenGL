@@ -129,12 +129,6 @@ struct SharkProgram {
         auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
         modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{0.1f});
         modelViewMatrix = glm::rotate(modelViewMatrix, 0.f, glm::vec3(0.0, 0.0, 1.0));
-        // modelViewMatrix = glm::rotate(modelViewMatrix, 300.f, glm::vec3(0.0, 1.0, 0.0));
-
-
-        // glActiveTexture(GL_TEXTURE0);
-        // glBindTexture(GL_TEXTURE_2D, textureID);
-        // glUniform1i(uTexture, 0);
 
         glBindVertexArray(vao);
 

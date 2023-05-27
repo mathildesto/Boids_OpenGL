@@ -16,7 +16,6 @@
 #include "Aquarium/shark.hpp"
 #include "Aquarium/plant.hpp"
 
-
 #include "boids3D/FishBoid.hpp"
 
 

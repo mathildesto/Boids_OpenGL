@@ -96,9 +96,7 @@
     void Personnage::draw(Camera::Freefly &freefly, glm::mat4 &projectionMatrix){
         m_Program.use();
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glUniform1i(uTexture, 0);
+        glm::vec3 pointLightPos = glm::vec3(_position.x, _position.y, _position.z);
 
         auto modelViewMatrix = glm::translate(freefly.getViewMatrix(),  glm::vec3(_position.x, _position.y -0.2, _position.z));
 
@@ -106,8 +104,6 @@
 
         modelViewMatrix = glm::rotate(modelViewMatrix, freefly._phi, glm::vec3(0.0, 1.0, 0.0)); //y
         modelViewMatrix = glm::rotate(modelViewMatrix, -freefly._theta, glm::vec3(1.0, 0.0, 0.0)); //X
-
-
         modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{0.05f});
         modelViewMatrix = glm::rotate(modelViewMatrix, 0.f, glm::vec3(0.0, 0.0, 1.0));
 
@@ -117,11 +113,12 @@
         glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(modelViewMatrix));
         glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
-        glUniform3fv(uKdVector, 1, glm::value_ptr(glm::vec3{0.5, 0.5, 0.5}));
-        glUniform3fv(uKsVector, 1, glm::value_ptr(glm::vec3{0.5, 0.5, 0.5}));
-        glUniform1f(uShininessFloat, 1.f);
-        glUniform3fv(uLightDirVector, 1, glm::value_ptr(glm::vec3(glm::mat4{1} * glm::vec4{1.f,1.f,1.f, 1.f}))); 
-        glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{1.f, 1.f, 1.f}));
+        glUniform3fv(uKdVector, 1, glm::value_ptr(glm::vec3{0.3, 0.3, 0.5})); // Bleu/gris diffus
+        glUniform3fv(uKsVector, 1, glm::value_ptr(glm::vec3{0.1, 0.1, 0.3})); // Bleu/gris spéculaire
+        glUniform1f(uShininessFloat, 0.5f);
+        // glUniform3fv(uLightDirVector, 1, glm::value_ptr(glm::vec3(glm::mat4{1} * glm::vec4{1.f,1.f,1.f, 1.f}))); 
+        glUniform3fv(uLightPosVector, 1, glm::value_ptr(glm::vec3(modelViewMatrix * glm::vec4{pointLightPos, 1.f}))); 
+        glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{0.008f, 0.008f, 0.008f}));
 
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 

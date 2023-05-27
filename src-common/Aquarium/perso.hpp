@@ -25,7 +25,8 @@ struct Personnage {
     GLint uKdVector;
     GLint uKsVector;
     GLint uShininessFloat; 
-    GLint uLightDirVector;   
+    GLint uLightDirVector;  
+    GLint uLightPosVector; 
     GLint uLightIntensityVector;
 
     GLuint vbo, vao, ibo, textureID;
@@ -36,7 +37,8 @@ struct Personnage {
 
     std::vector<unsigned int> indices;
 
-    Personnage(glm::vec3 position = {}) : _position(position), m_Program(p6::load_shader("shaders/3D_light.vs.glsl", "shaders/directionalLight.fs.glsl"))
+    // Personnage(glm::vec3 position = {}) : _position(position), m_Program(p6::load_shader("shaders/3D_light.vs.glsl", "shaders/directionalLight.fs.glsl"))
+    Personnage(glm::vec3 position = {}) : _position(position), m_Program(p6::load_shader("shaders/3D_light.vs.glsl", "shaders/pointLight.fs.glsl"))
     {
         uMVPMatrix              = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
         uMVMatrix               = glGetUniformLocation(m_Program.id(), "uMVMatrix");
@@ -45,11 +47,12 @@ struct Personnage {
         uKdVector               = glGetUniformLocation(m_Program.id(), "uKd");
         uKsVector               = glGetUniformLocation(m_Program.id(), "uKs");
         uShininessFloat         = glGetUniformLocation(m_Program.id(), "uShininess");
-        uLightDirVector         = glGetUniformLocation(m_Program.id(), "uLightDir_vs");
+        // uLightDirVector         = glGetUniformLocation(m_Program.id(), "uLightDir_vs");
+        uLightPosVector         = glGetUniformLocation(m_Program.id(), "uLightPos_vs");
         uLightIntensityVector   = glGetUniformLocation(m_Program.id(), "uLightIntensity");
 
         uTexture = glGetUniformLocation(m_Program.id(), "uTexture");
-        textureID = TextureLoading::LoadImageTexture("assets/textures/MoonMap.jpg");
+        // textureID = TextureLoading::LoadImageTexture("assets/textures/MoonMap.jpg");
 
 
     }

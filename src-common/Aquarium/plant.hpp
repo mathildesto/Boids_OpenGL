@@ -25,14 +25,16 @@ struct PlantProgram {
     GLint uKsVector;
     GLint uShininessFloat; 
     GLint uLightDirVector;   
-    // GLint uLightPosVector 
+    GLint uLightPosVector; 
     GLint uLightIntensityVector;
 
     GLuint vbo, vao, ibo, textureID;
 
     std::vector<unsigned int> indices;
 
-    PlantProgram() : m_Program(p6::load_shader("shaders/3D_light.vs.glsl", "shaders/directionalLight.fs.glsl"))
+    // PlantProgram() : m_Program(p6::load_shader("shaders/3D_light.vs.glsl", "shaders/directionalLight.fs.glsl"))
+    PlantProgram() : m_Program(p6::load_shader("shaders/3D_light.vs.glsl", "shaders/pointLight.fs.glsl"))
+
     {
         uMVPMatrix              = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
         uMVMatrix               = glGetUniformLocation(m_Program.id(), "uMVMatrix");
@@ -41,8 +43,8 @@ struct PlantProgram {
         uKdVector               = glGetUniformLocation(m_Program.id(), "uKd");
         uKsVector               = glGetUniformLocation(m_Program.id(), "uKs");
         uShininessFloat         = glGetUniformLocation(m_Program.id(), "uShininess");
-        uLightDirVector         = glGetUniformLocation(m_Program.id(), "uLightDir_vs");
-        // uLightPosVector         = glGetUniformLocation(m_Program, "uLightPos_vs");
+        // uLightDirVector         = glGetUniformLocation(m_Program.id(), "uLightDir_vs");
+        uLightPosVector         = glGetUniformLocation(m_Program.id(), "uLightPos_vs");
 
         uLightIntensityVector   = glGetUniformLocation(m_Program.id(), "uLightIntensity");
 
@@ -110,10 +112,9 @@ struct PlantProgram {
     void draw(Camera::Freefly freefly, p6::Context &ctx){
         m_Program.use();
 
-        glm::vec3 pointLightPos{10.f, 0.f, 10.f};
+        glm::vec3 pointLightPos{0.f, 0.5f, 0.0};
 
- 
-        auto       modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, -0.5f, 1.5f));
+        auto       modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, -0.5f, 2.0f));
         auto const projectionMatrix = glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), .1f, 100.f); // fov, aspect ratio, near, far
         auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
         modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{0.1f});
@@ -128,11 +129,10 @@ struct PlantProgram {
         glUniform3fv(uKdVector, 1, glm::value_ptr(glm::vec3{0.0, 1.0, 0.0}));
         glUniform3fv(uKsVector, 1, glm::value_ptr(glm::vec3{0.0, 1.0, 0.0}));
         glUniform1f(uShininessFloat, 1.f);
-        glUniform3fv(uLightDirVector, 1, glm::value_ptr(glm::vec3(glm::mat4{1} * glm::vec4{1.f,1.f,1.f, 1.f}))); 
+        // glUniform3fv(uLightDirVector, 1, glm::value_ptr(glm::vec3(glm::mat4{1} * glm::vec4{1.f,1.f,1.f, 1.f}))); 
+        glUniform3fv(uLightPosVector, 1, glm::value_ptr(glm::vec3(freefly.getViewMatrix() * glm::vec4{pointLightPos, 1.f}))); // mat4 -> vec3 ???
 
-        // glUniform3fv(uLightPosVector, 1, glm::value_ptr(glm::vec3(freefly.getViewMatrix() * glm::vec4{pointLightPos, 1.f}))); // mat4 -> vec3 ???
-
-        glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{1.f, 1.f, 1.f}));
+        glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{0.4f, 0.4f, 0.4f}));
 
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 

@@ -31,7 +31,7 @@ struct FishBoidProgram {
 
     std::vector<unsigned int> indices;
 
-    FishBoidProgram() : m_Program(p6::load_shader("shaders/3D_light.vs.glsl", "shaders/directionalLight.fs.glsl"))
+    FishBoidProgram() : m_Program(p6::load_shader("shaders/3D_light.vs.glsl", "shaders/directionalLight2.fs.glsl"))
     {
         uMVPMatrix              = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
         uMVMatrix               = glGetUniformLocation(m_Program.id(), "uMVMatrix");
@@ -144,6 +144,8 @@ struct FishBoidProgram {
             auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
             modelViewMatrix = glm::translate(modelViewMatrix, boids[i].position);
             modelViewMatrix = glm::scale(modelViewMatrix,  glm::vec3{param.boidSize});
+            modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(-90.f), glm::vec3(1.0f, 0.0f, 0.0f));
+
 
             // modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(boids[i].orientation.z), glm::vec3(0.0f, 0.0f, 1.0f));
             // modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(boids[i].orientation.y), glm::vec3(0.0f, 1.0f, 0.0f));
