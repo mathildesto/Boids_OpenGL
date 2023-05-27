@@ -23,18 +23,22 @@ vec3 blinnPhong() {
 }
 
 void main() {
-    // Échantillonne la couleur de la texture à partir des coordonnées de texture
-    vec4 texColor = texture(uTexture, vTexCoords);
-
-    // Applique la couleur de la texture sur le terme de réflexion diffuse
-    vec3 diffuseColor = texColor.rgb * uKd;
-
-    // Calcule la contribution de la lumière selon la méthode de Blinn-Phong
-    vec3 lighting = blinnPhong();
-
-    // Combinaison de la couleur de la texture et de l'éclairage
-    vec3 finalColor = diffuseColor * lighting;
-
-    // Résultat final
-    fFragColor = vec4(finalColor, 1.0);
+    fFragColor = vec4(blinnPhong(), 1.);
 }
+
+// void main() {
+//     // Échantillonne la couleur de la texture à partir des coordonnées de texture
+//     vec4 texColor = texture(uTexture, vTexCoords);
+
+//     // Applique la couleur de la texture sur le terme de réflexion diffuse
+//     vec3 diffuseColor = texColor.rgb * uKd;
+
+//     // Calcule la contribution de la lumière selon la méthode de Blinn-Phong
+//     vec3 lighting = blinnPhong();
+
+//     // Combinaison de la couleur de la texture et de l'éclairage
+//     vec3 finalColor = diffuseColor * lighting;
+
+//     // Résultat final
+//     fFragColor = vec4(finalColor, 1.0);
+// }

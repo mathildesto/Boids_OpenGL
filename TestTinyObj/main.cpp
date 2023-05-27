@@ -14,6 +14,8 @@
 
 #include "Aquarium/fish.hpp"
 #include "Aquarium/shark.hpp"
+#include "Aquarium/plant.hpp"
+
 
 #include "boids3D/FishBoid.hpp"
 
@@ -33,6 +35,10 @@ int main()
     SharkProgram shark{}; 
     shark.setVAO();
 
+    PlantProgram plant{};
+    plant.setVAO();
+
+
     /* Loop until the user closes the window */
     ctx.update = [&]() {
 
@@ -40,8 +46,9 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         freefly.handleEvent(ctx);
-        fish.draw(freefly, ctx);
+        // fish.draw(freefly, ctx);
         // shark.draw(freefly, ctx);
+        plant.draw(freefly, ctx);
 
     };
 
