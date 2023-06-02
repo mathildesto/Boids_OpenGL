@@ -50,6 +50,5 @@ endfunction(add_exercise)
 
 add_exercise(TP7_Camera)
 add_exercise(TP8_Light)
-add_exercise(3Dboids)
-add_exercise(DrawBoids)
+add_exercise(BoidsScene)
 add_exercise(TestTinyObj)

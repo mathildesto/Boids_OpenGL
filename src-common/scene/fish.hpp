@@ -1,15 +1,11 @@
 #pragma once
-#include "boids3D/boid3D.hpp"
-#include "glm/gtc/type_ptr.hpp"
 #include "p6/p6.h"
 #include <iostream>
-#include "Cam/Freefly.h"
-#include "Cam/Trackball.h"
+#include "camera/Freefly.h"
 #include<cmath>
-#include "glimac/sphere_vertices.hpp"
 #include "OpenGL_program/Texture_program.hpp"
 #include "tinyobjloader/tiny_obj_loader.h"
-#include "OpenGL_program/Texture_program.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 
 struct FishProgram {
@@ -31,7 +27,7 @@ struct FishProgram {
 
     std::vector<unsigned int> indices;
 
-    FishProgram() : m_Program(p6::load_shader("shaders/3D_light.vs.glsl", "shaders/directionalLight.fs.glsl"))
+    FishProgram() : m_Program(p6::load_shader("shaders/3D_light.vs.glsl", "shaders/directionalLight2.fs.glsl"))
     {
         uMVPMatrix              = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
         uMVMatrix               = glGetUniformLocation(m_Program.id(), "uMVMatrix");
@@ -126,13 +122,12 @@ struct FishProgram {
 
     void draw(Camera::Freefly freefly, p6::Context &ctx){
         m_Program.use();
- 
-        auto       modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, 0.f, 1.5f));
-        auto const projectionMatrix = glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), .1f, 100.f); // fov, aspect ratio, near, far
-        auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
+        
+        auto modelViewMatrix  = freefly.getViewMatrix();
+        auto projectionMatrix = glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), .1f, 100.f); // fov, aspect ratio, near, far
+        auto normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
         modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3{0.1f});
         modelViewMatrix = glm::rotate(modelViewMatrix, 300.f, glm::vec3(1.0, 0.0, 0.0));
-
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureID);
@@ -140,15 +135,16 @@ struct FishProgram {
 
         glBindVertexArray(vao);
 
-        glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projectionMatrix * modelViewMatrix));
-        glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(modelViewMatrix));
-        glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+       glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(modelViewMatrix));
+       glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projectionMatrix * modelViewMatrix));
+       glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
-        glUniform3fv(uKdVector, 1, glm::value_ptr(glm::vec3{0.5, 0.5, 0.5}));
-        glUniform3fv(uKsVector, 1, glm::value_ptr(glm::vec3{0.5, 0.5, 0.5}));
-        glUniform1f(uShininessFloat, 1.f);
-        glUniform3fv(uLightDirVector, 1, glm::value_ptr(glm::vec3(glm::mat4{1} * glm::vec4{1.f,1.f,1.f, 1.f}))); 
-        glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{1.f, 1.f, 1.f}));
+       glUniform3fv(uKdVector, 1, glm::value_ptr(glm::vec3{0.5, 0.0, 0.0}));
+       glUniform3fv(uKsVector, 1, glm::value_ptr(glm::vec3{0.5, 0.0, 0.0}));
+       glUniform1f(uShininessFloat, 1.f);
+        glUniform3fv(uLightDirVector, 1, glm::value_ptr(glm::vec3{2.f, 2.f, 2.f}));
+       glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{1.f, .3f, .5f}));
+
 
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 

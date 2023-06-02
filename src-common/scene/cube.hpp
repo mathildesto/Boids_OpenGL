@@ -1,12 +1,9 @@
 #pragma once
-#include "boids3D/boid3D.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "p6/p6.h"
 #include <iostream>
-#include "Cam/Freefly.h"
-#include "Cam/Trackball.h"
+#include "camera/Freefly.h"
 #include<cmath>
-#include "glimac/sphere_vertices.hpp"
 #include "OpenGL_program/Texture_program.hpp"
 
 
@@ -92,7 +89,8 @@ struct CubeProgram {
     void drawCube(glm::mat4 projection, glm::mat4 modelViewMatrix){
                 ////////////////////////CUBE/////////////////////////////////////////
 
-        // auto const normalMatrix     = glm::transpose(glm::inverse(modelViewMatrix));
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         shader.use();
 

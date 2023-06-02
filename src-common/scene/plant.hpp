@@ -1,12 +1,9 @@
 #pragma once
-#include "boids3D/boid3D.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "p6/p6.h"
 #include <iostream>
-#include "Cam/Freefly.h"
-#include "Cam/Trackball.h"
+#include "camera/Freefly.h"
 #include<cmath>
-#include "glimac/sphere_vertices.hpp"
 #include "OpenGL_program/Texture_program.hpp"
 #include "tinyobjloader/tiny_obj_loader.h"
 #include "OpenGL_program/Texture_program.hpp"
@@ -112,7 +109,7 @@ struct PlantProgram {
     void draw(Camera::Freefly freefly, p6::Context &ctx){
         m_Program.use();
 
-        glm::vec3 pointLightPos{0.f, 0.5f, 0.0};
+        glm::vec3 pointLightPos{0.f, 0.5f, 2.0};
 
         auto       modelViewMatrix  = glm::translate(freefly.getViewMatrix(), glm::vec3(0.f, -0.5f, 2.0f));
         auto const projectionMatrix = glm::perspective(glm::radians(70.f), ctx.aspect_ratio(), .1f, 100.f); // fov, aspect ratio, near, far
@@ -129,10 +126,9 @@ struct PlantProgram {
         glUniform3fv(uKdVector, 1, glm::value_ptr(glm::vec3{0.0, 1.0, 0.0}));
         glUniform3fv(uKsVector, 1, glm::value_ptr(glm::vec3{0.0, 1.0, 0.0}));
         glUniform1f(uShininessFloat, 1.f);
-        // glUniform3fv(uLightDirVector, 1, glm::value_ptr(glm::vec3(glm::mat4{1} * glm::vec4{1.f,1.f,1.f, 1.f}))); 
         glUniform3fv(uLightPosVector, 1, glm::value_ptr(glm::vec3(freefly.getViewMatrix() * glm::vec4{pointLightPos, 1.f}))); // mat4 -> vec3 ???
 
-        glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{0.4f, 0.4f, 0.4f}));
+        glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{0.08f, 0.08f, 0.08f}));
 
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 

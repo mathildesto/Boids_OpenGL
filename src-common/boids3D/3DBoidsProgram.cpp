@@ -1,11 +1,9 @@
 #pragma once
-#include "Cam/Freefly.h"
-#include "boids3D/boid3D.hpp"
+#include "camera/Freefly.h"
+#include "boids3D/3DBoidsMouvement.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "p6/p6.h"
 #include <iostream>
-#include "Cam/Freefly.h"
-#include "Cam/Trackball.h"
 #include<cmath>
 #include "glimac/sphere_vertices.hpp"
 #include "3DBoidsProgram.hpp"

@@ -1,8 +1,7 @@
 #include "p6/p6.h"
-#include "boid3D.hpp"
+#include "3DBoidsMouvement.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <iostream>
-#include "Cam/Trackball.h"
 #include<cmath>
 #include "glimac/sphere_vertices.hpp"
 
@@ -152,11 +151,11 @@ void alignment(std::vector<Boid3D>& boids, ParamBoids3D &param, Boid3D &boid){
         //Divide accumulator variables by number of boids in visual range
         xpos_avg = xpos_avg/neighboring_boids; 
         ypos_avg = ypos_avg/neighboring_boids;
-        zpos_avg = ypos_avg/neighboring_boids;
+        zpos_avg = zpos_avg/neighboring_boids;
 
         boid.velocity[0] += (xpos_avg - boid.position[0])*param.centeringfactor; //Add the centering/matching contributions to velocity
         boid.velocity[1] += (ypos_avg - boid.position[1])*param.centeringfactor;
-        boid.velocity[2] += (ypos_avg - boid.position[2])*param.centeringfactor;
+        boid.velocity[2] += (zpos_avg - boid.position[2])*param.centeringfactor;
     }
 }
 
@@ -188,23 +187,16 @@ void update_position(std::vector<Boid3D>& boids, Window3D &window, ParamBoids3D 
 
         boid.add_velocity();
                 
-        // // Update boid's orientation
-        // glm::vec3 direction = glm::normalize(boid.velocity);
-        // // Calculate the angles for rotation
-        // float yaw = glm::degrees(atan2(direction.x, direction.z));
-        // float pitch = glm::degrees(asin(-direction.y));
-        // float roll = glm::degrees(atan2(direction.y, direction.x));
+        // Update boid's orientation
+        glm::vec3 direction = glm::normalize(boid.velocity);
+        // Calculate the angles for rotation
+        float yaw = glm::degrees(atan2(direction.x, direction.z));
+        float pitch = glm::degrees(asin(-direction.y));
 
-        // // Set the boid's orientation
-        // // Assuming you have a `glm::vec3` member variable named `orientation` in the `Boid3D` struct
-        // boid.orientation = glm::vec3(pitch, yaw, roll);
+        // Set the boid's orientation
+        // Assuming you have a `glm::vec3` member variable named `orientation` in the `Boid3D` struct
+        boid.orientation = glm::vec3(pitch, yaw, 0.0);
 
-        // // float smoothness = param.smoothness * ctx.time();
-        // float smoothness = 0.000001;
-
-        // boid.orientation.x += (pitch - boid.orientation.x) * smoothness;
-        // boid.orientation.y += (yaw - boid.orientation.y) * smoothness;
-        // boid.orientation.z += (roll - boid.orientation.z) * smoothness;
     }
 }
 

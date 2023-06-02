@@ -3,12 +3,11 @@
 #include "p6/p6.h"
 #include <iostream>
 #include<cmath>
-#include "glimac/sphere_vertices.hpp"
 
 struct ParamBoids3D{
     int numberOfBoids = 50;
 
-    float boidSize = 0.005f;
+    float boidSize = 0.002f;
 
     float visualRange = 0.3 ; 
     float protectedRange = 0.08 ; 
@@ -40,8 +39,7 @@ struct Boid3D {
     float size;
     glm::vec3 position;
     glm::vec3 velocity;
-    // glm::vec3 orientation; 
-    // glm::vec3 targetOrientation;
+    glm::vec3 orientation; 
 
 
     Boid3D() {

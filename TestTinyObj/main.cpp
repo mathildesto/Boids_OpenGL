@@ -7,16 +7,16 @@
 #include "glm/gtx/string_cast.hpp"
 #include "img/src/Image.h"
 #include "p6/p6.h"
-#include <cam/Freefly.h>
+#include <camera/Freefly.h>
 
 #include "tinyobjloader/tiny_obj_loader.h"
 #include "glimac/common.hpp"
 
-#include "Aquarium/fish.hpp"
-#include "Aquarium/shark.hpp"
-#include "Aquarium/plant.hpp"
+#include "scene/fish.hpp"
+#include "scene/shark.hpp"
+#include "scene/plant.hpp"
 
-#include "boids3D/FishBoid.hpp"
+#include "boids3D/FishBoidProgram.hpp"
 
 
 
@@ -45,9 +45,9 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         freefly.handleEvent(ctx);
-        // fish.draw(freefly, ctx);
+        fish.draw(freefly, ctx);
         // shark.draw(freefly, ctx);
-        plant.draw(freefly, ctx);
+        // plant.draw(freefly, ctx);
 
     };
 

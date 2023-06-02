@@ -1,25 +1,24 @@
 #include "tinyobjloader/tiny_obj_loader.h"
 
 #include <vcruntime.h>
-#include <cstddef> // For offsetof()
+#include <cstddef> 
 #include <glm/gtc/random.hpp>
-#include "Cam/Freefly.h"
-#include "Cam/Trackball.h"
+#include "camera/Freefly.h"
 #include "glimac/common.hpp"
 #include "glimac/sphere_vertices.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "p6/p6.h"
-#include "boids3D/boid3D.hpp"
+#include "boids3D/3DBoidsMouvement.hpp"
 #include "boids3D/3DBoidsProgram.hpp"
-#include "Aquarium/cube.hpp"
-#include "Aquarium/perso.hpp"
-#include "Aquarium/skybox.hpp"
-#include "Aquarium/plant.hpp"
+#include "scene/cube.hpp"
+#include "scene/perso.hpp"
+#include "scene/skybox.hpp"
+#include "scene/plant.hpp"
 
 
-#include "boids3D/FishBoid.hpp"
+#include "boids3D/FishBoidProgram.hpp"
 
 
 
@@ -91,11 +90,12 @@ int main()
 
         freefly.handleEvent(ctx);
 
-        fishBoid.draw(boids, projection, modelViewMatrix, param, window, ctx);
+        fishBoid.draw(boids, projection, modelViewMatrix, param, window, ctx, freefly);
         // boidsProgram.drawBoids(boids, projection, modelViewMatrix, param, window);
         plant.draw(freefly,ctx);
-        aquarium.drawCube(projection, modelViewMatrix);
         skybox.drawSkybox(freefly, projection);
+        aquarium.drawCube(projection, modelViewMatrix);
+
     
    };
 

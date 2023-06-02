@@ -1,10 +1,8 @@
-#include "Aquarium/perso.hpp"
-#include "boids3D/boid3D.hpp"
+#include "scene/perso.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "p6/p6.h"
 #include <iostream>
-#include "Cam/Freefly.h"
-#include "Cam/Trackball.h"
+#include "camera/Freefly.h"
 #include<cmath>
 #include "glimac/sphere_vertices.hpp"
 #include "perso.hpp"
@@ -115,10 +113,10 @@
 
         glUniform3fv(uKdVector, 1, glm::value_ptr(glm::vec3{0.3, 0.3, 0.5})); // Bleu/gris diffus
         glUniform3fv(uKsVector, 1, glm::value_ptr(glm::vec3{0.1, 0.1, 0.3})); // Bleu/gris spéculaire
-        glUniform1f(uShininessFloat, 0.5f);
-        // glUniform3fv(uLightDirVector, 1, glm::value_ptr(glm::vec3(glm::mat4{1} * glm::vec4{1.f,1.f,1.f, 1.f}))); 
-        glUniform3fv(uLightPosVector, 1, glm::value_ptr(glm::vec3(modelViewMatrix * glm::vec4{pointLightPos, 1.f}))); 
-        glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{0.008f, 0.008f, 0.008f}));
+        glUniform1f(uShininessFloat, 0.5f); 
+        glUniform3fv(uLightPosVector, 1, glm::value_ptr(glm::vec3(freefly.getViewMatrix() * glm::vec4{pointLightPos, 1.f}))); 
+
+        glUniform3fv(uLightIntensityVector, 1, glm::value_ptr(glm::vec3{0.08f, 0.08f, 0.08f}));
 
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 

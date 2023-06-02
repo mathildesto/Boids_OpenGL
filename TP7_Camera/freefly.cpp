@@ -1,4 +1,4 @@
-#include "Cam/Freefly.h"
+#include "camera/Freefly.h"
 #include <cstddef> // For offsetof()
 #include <glm/gtc/random.hpp>
 #include "glimac/common.hpp"
